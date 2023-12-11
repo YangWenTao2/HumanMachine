@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plus.mapper.ClassMapper">
+  <!-- 通用查询映射结果 -->
+  <resultMap id="BaseResultMap" type="com.plus.entity.ClassEntity">
+    <!-- 注意：这里的字段名需要与数据库表中的字段名一致 -->
+    <id column="userClassId" property="userClassId" />
+    <result column="userId" property="userId" />
+    <result column="className" property="className" />
+    <result column="instructor" property="instructor" />
+    <result column="weekfrom" property="weekfrom" />
+    <result column="weekto" property="weekto" />
+    <result column="lessonfrom" property="lessonfrom" />
+    <result column="lessonto" property="lessonto" />
+    <result column="day" property="day" />
+    <result column="location" property="location" />
+    <!-- 其他课程信息字段 -->
+  </resultMap>
+  <select id="getWeeklyClasses" resultMap="BaseResultMap">
+    SELECT * FROM UserClass
+    WHERE user_id = #{userId}
+    <!-- 其他查询条件 -->
+  </select>
+
+  <select id="getDayClass" resultMap="BaseResultMap">
+    SELECT * FROM UserClass
+    WHERE user_id = #{userId}
+    AND weekto >= #{week}
+    AND weekfrom <![CDATA[ <= ]]> #{week}
+    AND day = #{day}
+  </select>
+
+  <select id="getDayNextClass" resultMap="BaseResultMap">
+    SELECT * FROM UserClass
+    WHERE user_id = #{userId}
+            AND weekto >= #{week}
+            AND weekfrom <![CDATA[ <= ]]> #{week}
+            AND day >= #{day}
+            AND day <![CDATA[ <= ]]> #{day}+1
+  </select>
+</mapper>
